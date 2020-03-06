@@ -14,21 +14,21 @@
 
 ARG DISTRO_VERSION=latest
 FROM grpc-cpp-devtools:${DISTRO_VERSION} AS build
-MAINTAINER "Carlos O'Ryan <coryan@users.noreply.github.com>"
+LABEL maintainer="Matt Budish <mtbudish@gmail.com>"
 
 # Copy the project source code into the intermediate 'build' image.
-COPY . /w
+COPY . /opt/code/
 
 # Configure the project using CMake. Some of the options are unusual:
 #   -GNinja: use Ninja as the backend as this is often faster than Make.
 #   -CMAKE_TOOLCHAIN_FILE=...: use the packages installed via vcpkg.
 #   -DBoost_USE_STATIC_LIBS=ON: prefer static over shared libraries for Boost.
 #   -DCMAKE_EXE_LINKER_FLAGS=...: create statically linked binaries.
-WORKDIR /w
+WORKDIR /opt/code/
 RUN cmake -H. -B.build \
     -GNinja \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_TOOLCHAIN_FILE=/l/vcpkg/scripts/buildsystems/vcpkg.cmake \
+    -DCMAKE_TOOLCHAIN_FILE=/opt/tools/vcpkg/scripts/buildsystems/vcpkg.cmake \
     -DBoost_USE_STATIC_LIBS=ON \
     -DCMAKE_EXE_LINKER_FLAGS="-static"
 
@@ -38,9 +38,9 @@ RUN strip .build/examples/echo/echo_server .build/examples/echo/echo_client
 
 FROM alpine:latest
 COPY --from=build \
-    /w/.build/examples/echo/echo_server \
-    /w/.build/examples/echo/echo_client \
-    /r/
+    /opt/code/.build/examples/echo/echo_server \
+    /opt/code/.build/examples/echo/echo_client \
+    /opt/app/
 
 EXPOSE 7000
-CMD "/r/echo_server"
+CMD ["/opt/app/echo_server"]
