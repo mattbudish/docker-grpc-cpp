@@ -16,7 +16,7 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: echo-server
-        image: mtbcr.azurecr.io/grpc-cpp-echo
+        image: grpc-cpp-echo
         resources:
           requests:
             cpu: 100m
