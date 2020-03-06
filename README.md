@@ -35,7 +35,7 @@ Once the development tools image is created we can use it to create a Docker
 image with a C++ gRPC server:
 
 ```bash
-sudo docker build -t grpc-cpp-echo:latest -f examples/echo/Dockerfile.server .
+sudo docker build -t grpc-cpp-echo:latest -f examples/echo/Dockerfile .
 ```
 
 Note that this image is relatively small:

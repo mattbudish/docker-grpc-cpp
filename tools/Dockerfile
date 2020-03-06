@@ -14,11 +14,13 @@
 
 # This is a multi-stage build. This file creates intermediate images and
 # discards some intermediate artifacts to produce an overall smaller image.
+#
+# Modifications copyright 2020 Matt Budish
 
 ARG DISTRO_VERSION=3.11.3
 FROM alpine:${DISTRO_VERSION} AS devtools
 
-LABEL maintainer="Matt Budish <mtbudish@gmail.com"
+LABEL maintainer="Matt Budish <mtbudish@gmail.com>"
 
 RUN apk update && apk upgrade && \
     apk --no-cache add \
