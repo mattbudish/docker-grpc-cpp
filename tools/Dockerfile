@@ -21,7 +21,7 @@ FROM alpine:${DISTRO_VERSION} AS devtools
 LABEL maintainer="Matt Budish <mtbudish@gmail.com"
 
 RUN apk update && apk upgrade && \
-    apk --no-cache add 
+    apk --no-cache add \
         boost-dev \
         boost-static \
         build-base \

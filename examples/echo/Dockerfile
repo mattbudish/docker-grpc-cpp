@@ -12,8 +12,9 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ARG DISTRO_VERSION=latest
-FROM grpc-cpp-devtools:${DISTRO_VERSION} AS build
+ARG TOOLS_VERSION=latest
+ARG ALPINE_VERSION=3.11.3
+FROM mattbudish/grpc-cpp-devtools:${TOOLS_VERSION} AS build
 LABEL maintainer="Matt Budish <mtbudish@gmail.com>"
 
 # Copy the project source code into the intermediate 'build' image.
@@ -36,7 +37,9 @@ RUN cmake -H. -B.build \
 RUN cmake --build .build
 RUN strip .build/examples/echo/echo_server .build/examples/echo/echo_client
 
-FROM alpine:latest
+FROM alpine:${ALPINE_VERSION}
+LABEL maintainer="Matt Budish <mtbudish@gmail.com>"
+
 COPY --from=build \
     /opt/code/.build/examples/echo/echo_server \
     /opt/code/.build/examples/echo/echo_client \
